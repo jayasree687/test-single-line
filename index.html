@@ -55,7 +55,7 @@
     document.body.appendChild(renderer.domElement);
 
     // Initial model
-    loadModel('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb');
+    loadModel('path/to/your/first_model.glb');
 
     // Hotspot buttons
     const hotspotButtonsContainer = document.getElementById('hotspot-buttons');
@@ -103,7 +103,7 @@
   }
 
   function addHotspotButton(container, text, onClick, x, y) {
-    const spriteMap = new THREE.TextureLoader().load('https://png.pngtree.com/png-clipart/20200801/ourlarge/pngtree-red-solid-color-round-png-image_2319172.jpg');
+    const spriteMap = new THREE.TextureLoader().load('1.png');
     const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.1, 0.1, 1);
@@ -116,7 +116,7 @@
   }
 
   function addViewButton(container, text, onClick, x, y) {
-    const spriteMap = new THREE.TextureLoader().load('https://png.pngtree.com/png-clipart/20200801/ourlarge/pngtree-red-solid-color-round-png-image_2319172.jpg');
+    const spriteMap = new THREE.TextureLoader().load('2.png');
     const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.1, 0.1, 1);
