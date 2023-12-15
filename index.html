@@ -17,7 +17,10 @@
       border: 1px solid #cccccc;
       border-radius: 5px;
       pointer-events: none;
-      display: none;
+    }
+    .annotation {
+      cursor: pointer;
+      margin-bottom: 5px;
     }
     #ui-buttons {
       position: absolute;
@@ -88,8 +91,12 @@
       controls.target.copy(center);
       camera.lookAt(center);
 
-      // Add annotation
-      addAnnotation(carModel, 'Click me!', () => alert('Car clicked'));
+      // Add annotations
+      addAnnotation(carModel, 'Click me!', () => alert('Car clicked'), 0.2, 0.2);
+      addAnnotation(carModel, 'Another annotation', () => alert('Another annotation clicked'), -0.5, -0.5);
+
+      // Initial rendering
+      renderer.render(scene, camera);
     });
 
     // Camera Controls
@@ -111,12 +118,16 @@
 
     // Add your animation logic here
 
+    // Render scene
     renderer.render(scene, camera);
   }
 
-  function addAnnotation(object, text, onClick) {
+  function addAnnotation(object, text, onClick, offsetX, offsetY) {
     const annotationElement = document.getElementById('annotation-container');
     const position = object.position.clone();
+    position.x += offsetX;
+    position.y += offsetY;
+
     const screenPosition = position.project(camera);
 
     const annotation = document.createElement('div');
