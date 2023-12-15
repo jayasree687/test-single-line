@@ -3,29 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virtual Car Showroom</title>
+  <title>Nissan Virtual Car Showroom</title>
   <style>
     body { margin: 0; overflow: hidden; }
     canvas { display: block; }
-    #annotation-container {
+    #hotspot-buttons {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      max-width: 300px;
-      padding: 10px;
-      background-color: #ffffff;
-      border: 1px solid #cccccc;
-      border-radius: 5px;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
     }
-    .annotation {
+    .hotspot-button {
+      background: transparent;
+      border: none;
       cursor: pointer;
-      margin-bottom: 5px;
     }
   </style>
 </head>
 <body>
 
-<div id="annotation-container"></div>
+<div id="hotspot-buttons"></div>
 
 <script type="module">
   import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
@@ -66,9 +64,10 @@
       controls.target.copy(center);
       camera.lookAt(center);
 
-      // Add annotations
-      addAnnotation(carModel, 'Click me!', () => openLink('https://nissan.com'));
-      addAnnotation(carModel, 'Another annotation', () => openLink('https://example.com'));
+      // Add hotspot buttons
+      const hotspotButtonsContainer = document.getElementById('hotspot-buttons');
+      addHotspotButton(hotspotButtonsContainer, 'path/to/button_image_1.png', () => openLink('https://png.pngtree.com/png-clipart/20200801/ourlarge/pngtree-red-solid-color-round-png-image_2319172.jpg'));
+      addHotspotButton(hotspotButtonsContainer, 'path/to/button_image_2.png', () => openLink('https://png.pngtree.com/png-clipart/20200801/ourlarge/pngtree-red-solid-color-round-png-image_2319172.jpg'));
 
       // Initial rendering
       renderer.render(scene, camera);
@@ -95,21 +94,18 @@
     renderer.render(scene, camera);
   }
 
-  function addAnnotation(object, text, onClick) {
-    const annotationElement = document.getElementById('annotation-container');
-    const position = object.position.clone();
-    const screenPosition = position.project(camera);
+  function addHotspotButton(container, imagePath, onClick) {
+    const button = document.createElement('button');
+    button.className = 'hotspot-button';
+    button.style.background = `url(${https://png.pngtree.com/png-clipart/20200801/ourlarge/pngtree-red-solid-color-round-png-image_2319172.jpg})`;
+    button.style.width = '50px';
+    button.style.height = '50px';
+    button.style.margin = '5px';
+    button.style.border = 'none';
+    button.style.cursor = 'pointer';
+    button.addEventListener('click', onClick);
 
-    const annotation = document.createElement('div');
-    annotation.className = 'annotation';
-    annotation.textContent = text;
-
-    annotation.style.left = ((screenPosition.x + 1) / 2 * window.innerWidth) + 'px';
-    annotation.style.top = ((-screenPosition.y + 1) / 2 * window.innerHeight) + 'px';
-
-    annotation.addEventListener('click', onClick);
-
-    annotationElement.appendChild(annotation);
+    container.appendChild(button);
   }
 
   function onWindowResize() {
@@ -119,7 +115,7 @@
   }
 
   function openLink(url) {
-    window.open(url, 'https://discourse.threejs.org/t/help-with-sketchfab-like-annotations/17256');
+    window.open(url, 'https://www.youtube.com/watch?v=sp40LPj-ifY');
   }
 </script>
 
