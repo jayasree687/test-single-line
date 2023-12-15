@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Three.js Car Annotations</title>
+  <title>Virtual Car Showroom</title>
   <style>
-    body { margin: 0; }
+    body { margin: 0; overflow: hidden; }
     canvas { display: block; }
     #annotation-container {
       position: absolute;
@@ -16,51 +16,16 @@
       background-color: #ffffff;
       border: 1px solid #cccccc;
       border-radius: 5px;
-      pointer-events: none;
     }
     .annotation {
       cursor: pointer;
       margin-bottom: 5px;
-    }
-    #ui-buttons {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1;
-    }
-    #hotspot-buttons {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
-    }
-    .sprite-button {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      background-color: #3498db;
-      color: #fff;
-      padding: 8px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
 <div id="annotation-container"></div>
-<div id="ui-buttons">
-  <button onclick="toggleAnnotations()">Toggle Annotations</button>
-  <button onclick="zoomIn()">Zoom In</button>
-  <button onclick="zoomOut()">Zoom Out</button>
-</div>
-<div id="hotspot-buttons">
-  <button onclick="changeCameraPreset('front')">Front View</button>
-  <button onclick="changeCameraPreset('rear')">Rear View</button>
-</div>
-<button class="sprite-button" onclick="changeAnnotationPosition('left')">Move Annotation Left</button>
 
 <script type="module">
   import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
@@ -68,7 +33,6 @@
   import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
 
   let camera, scene, renderer, controls;
-  let annotations = [];
 
   init();
   animate();
@@ -80,9 +44,8 @@
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(5, 5, 5);
-    scene.add(directionalLight);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+    scene.add(hemiLight);
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
@@ -104,8 +67,8 @@
       camera.lookAt(center);
 
       // Add annotations
-      addAnnotation(carModel, 'Click me!', () => alert('Car clicked'), 0.2, 0.2);
-      addAnnotation(carModel, 'Another annotation', () => alert('Another annotation clicked'), -0.5, -0.5);
+      addAnnotation(carModel, 'Click me!', () => openLink('https://nissan.com'));
+      addAnnotation(carModel, 'Another annotation', () => openLink('https://example.com'));
 
       // Initial rendering
       renderer.render(scene, camera);
@@ -128,16 +91,37 @@
     // Camera Controls Update
     controls.update();
 
-    // Add your animation logic here
-
     // Render scene
     renderer.render(scene, camera);
   }
 
-  function addAnnotation(object, text, onClick, offsetX, offsetY) {
+  function addAnnotation(object, text, onClick) {
     const annotationElement = document.getElementById('annotation-container');
     const position = object.position.clone();
-    position.x += offsetX;
-    position.y += offsetY;
+    const screenPosition = position.project(camera);
 
-   
+    const annotation = document.createElement('div');
+    annotation.className = 'annotation';
+    annotation.textContent = text;
+
+    annotation.style.left = ((screenPosition.x + 1) / 2 * window.innerWidth) + 'px';
+    annotation.style.top = ((-screenPosition.y + 1) / 2 * window.innerHeight) + 'px';
+
+    annotation.addEventListener('click', onClick);
+
+    annotationElement.appendChild(annotation);
+  }
+
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  function openLink(url) {
+    window.open(url, 'https://discourse.threejs.org/t/help-with-sketchfab-like-annotations/17256');
+  }
+</script>
+
+</body>
+</html>
