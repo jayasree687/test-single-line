@@ -7,23 +7,27 @@
   <style>
     body { margin: 0; overflow: hidden; }
     canvas { display: block; }
-    #hotspot-buttons {
+    #annotations-container {
       position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
+      top: 10px;
+      left: 10px;
+      max-width: 300px;
+      padding: 10px;
+      background-color: #ffffff;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
     }
-    .hotspot-button {
+    .annotation-button {
       background: transparent;
       border: none;
       cursor: pointer;
+      margin: 5px;
     }
   </style>
 </head>
 <body>
 
-<div id="hotspot-buttons"></div>
+<div id="annotations-container"></div>
 
 <script type="module">
   import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
@@ -64,10 +68,11 @@
       controls.target.copy(center);
       camera.lookAt(center);
 
-      // Add hotspot buttons
-      const hotspotButtonsContainer = document.getElementById('hotspot-buttons');
-      addHotspotButton(hotspotButtonsContainer, 'd35b94521550a78ab19efdebb01fa37c.jpg', () => openLink('https://png.pngtree.com/png-clipart/20200801/ourlarge/pngtree-red-solid-color-round-png-image_2319172.jpg'));
-      addHotspotButton(hotspotButtonsContainer, 'whatsapp-image-2023-08-18-at-9-19-12-am.jpeg', () => openLink('https://png.pngtree.com/png-clipart/20200801/ourlarge/pngtree-red-solid-color-round-png-image_2319172.jpg'));
+      // Add annotation buttons
+      const annotationsContainer = document.getElementById('annotations-container');
+      addAnnotationButton(annotationsContainer, 'Top', () => openLink('https://nissan.com/top'), 0, 0);
+      addAnnotationButton(annotationsContainer, 'Middle', () => openLink('https://nissan.com/middle'), 0, 0.5);
+      addAnnotationButton(annotationsContainer, 'Bottom', () => openLink('https://nissan.com/bottom'), 0, 1);
 
       // Initial rendering
       renderer.render(scene, camera);
@@ -94,15 +99,13 @@
     renderer.render(scene, camera);
   }
 
-  function addHotspotButton(container, imagePath, onClick) {
+  function addAnnotationButton(container, text, onClick, x, y) {
     const button = document.createElement('button');
-    button.className = 'hotspot-button';
-    button.style.background = `url(${imagePath})`;
-    button.style.width = '50px';
-    button.style.height = '50px';
-    button.style.margin = '5px';
-    button.style.border = 'none';
-    button.style.cursor = 'pointer';
+    button.className = 'annotation-button';
+    button.textContent = text;
+    button.style.position = 'absolute';
+    button.style.left = x * 100 + '%';
+    button.style.top = y * 100 + '%';
     button.addEventListener('click', onClick);
 
     container.appendChild(button);
@@ -115,7 +118,7 @@
   }
 
   function openLink(url) {
-    window.open(url, 'https://www.youtube.com/watch?v=sp40LPj-ifY');
+    window.open(url, 'https://pngtree.com/freepng/red-solid-color-round_5487776.html');
   }
 </script>
 
