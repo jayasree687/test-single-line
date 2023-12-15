@@ -35,10 +35,7 @@
   <button onclick="zoomIn()">Zoom In</button>
   <button onclick="zoomOut()">Zoom Out</button>
 </div>
-
- 
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>
-        
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>        
         <script type="module">
                import {
   Color,
@@ -76,11 +73,16 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders
     document.body.appendChild(renderer.domElement);
 
     // Load your 3D car model here, for example:
-    const loader = new THREE.GLTFLoader();
-    loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb', (gltf) => { 
-      scene.add(gltf.scene);
-      addAnnotation(gltf.scene, 'Click me!', () => alert('Car clicked'));
-    });
+    function loadModel(scene) {
+  const loader = new GLTFLoader();
+  loader.crossOrigin = "anonymous";
+  loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb',(gltf) => {
+    
+    const model = gltf.scene.children[0]
+    model.scale.multiplyScalar(0.1)
+    model.position.y = - 1.5
+    
+    scene.add(model)
 
     // Camera Controls
     controls = new OrbitControls(camera, renderer.domElement);
