@@ -35,6 +35,17 @@
       transform: translateX(-50%);
       z-index: 1;
     }
+    .sprite-button {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background-color: #3498db;
+      color: #fff;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -49,6 +60,7 @@
   <button onclick="changeCameraPreset('front')">Front View</button>
   <button onclick="changeCameraPreset('rear')">Rear View</button>
 </div>
+<button class="sprite-button" onclick="changeAnnotationPosition('left')">Move Annotation Left</button>
 
 <script type="module">
   import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
@@ -128,58 +140,4 @@
     position.x += offsetX;
     position.y += offsetY;
 
-    const screenPosition = position.project(camera);
-
-    const annotation = document.createElement('div');
-    annotation.className = 'annotation';
-    annotation.textContent = text;
-
-    annotation.style.left = ((screenPosition.x + 1) / 2 * window.innerWidth) + 'px';
-    annotation.style.top = ((-screenPosition.y + 1) / 2 * window.innerHeight) + 'px';
-
-    annotation.addEventListener('click', onClick);
-
-    annotationElement.appendChild(annotation);
-    annotations.push(annotation);
-  }
-
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
-  function toggleAnnotations() {
-    const annotationContainer = document.getElementById('annotation-container');
-    annotationContainer.style.display = annotationContainer.style.display === 'none' ? 'block' : 'none';
-  }
-
-  function zoomIn() {
-    controls.dollyIn(1.2);
-  }
-
-  function zoomOut() {
-    controls.dollyOut(1.2);
-  }
-
-  function changeCameraPreset(preset) {
-    switch (preset) {
-      case 'front':
-        controls.reset();
-        controls.target.set(0, 0, 0);
-        controls.rotateLeft(Math.PI / 2);
-        controls.rotateUp(Math.PI / 6);
-        break;
-      case 'rear':
-        controls.reset();
-        controls.target.set(0, 0, 0);
-        controls.rotateLeft(-Math.PI / 2);
-        controls.rotateUp(-Math.PI / 6);
-        break;
-      // Add more presets as needed
-    }
-  }
-</script>
-
-</body>
-</html>
+   
