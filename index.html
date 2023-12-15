@@ -1,129 +1,127 @@
- <!DOCTYPE html>
- <html>
-    <head>
-        <title>My first three.js app</title>
-        <style>
-          body {
-	background-color: #000;
-	margin: 0px;
-	overflow: hidden;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Car Annotations</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+    #annotation-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      max-width: 300px;
+      padding: 10px;
+      background-color: #ffffff;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      pointer-events: none;
+      display: none;
+    }
+    #ui-buttons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
 
-h1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  text-align: center;
-}
+<div id="annotation-container"></div>
+<div id="ui-buttons">
+  <button onclick="toggleAnnotations()">Toggle Annotations</button>
+  <button onclick="zoomIn()">Zoom In</button>
+  <button onclick="zoomOut()">Zoom Out</button>
+</div>
 
-        </style>
-    </head>
-    <body>
-        <h1></h1>
-    
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>
-        
-        <script type="module">
-               import {
-  Color,
-  LinearEncoding,
-  MeshBasicMaterial,
-  Mesh,
-  PerspectiveCamera,
-  sRGBEncoding,
-  Sprite,
-  HemisphereLight,
-  SpriteMaterial,
-  TextureLoader,
-  BoxBufferGeometry,
-  Scene,
-  Vector3,
-  WebGLRenderer,
-} from "https://unpkg.com/three@0.127.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
+<script type="module">
+  import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+  import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
 
-import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+  let camera, scene, renderer, controls;
+  let annotations = [];
 
-init();
+  init();
+  animate();
 
-function init() {
-    const renderer = new WebGLRenderer();
-    renderer.outputEncoding = sRGBEncoding;
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.setPixelRatio( window.devicePixelRatio );
-  
-    document.body.appendChild( renderer.domElement );
-  
-    const scene = new Scene();
-    scene.background = new Color(0xeeeeee)
-  
-    const light = new HemisphereLight(0xffffee, 0x444444)
-    scene.add(light)
+  function init() {
+    scene = new THREE.Scene();
 
-    const camera = new PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 10 );
-    camera.position.set(0, 0, 3);
-    
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
 
-    const controls = new OrbitControls(camera, renderer.domElement);
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-
-    renderer.setAnimationLoop(() => {
-      renderer.render( scene, camera );
+    // Load your 3D car model here, for example:
+    const loader = new THREE.GLTFLoader();
+    loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb', (gltf) => { 
+      scene.add(gltf.scene);
+      addAnnotation(gltf.scene, 'Click me!', () => alert('Car clicked'));
     });
-  
-  loadModel(scene)
-}
 
-function loadModel(scene) {
-  const loader = new GLTFLoader();
-  loader.crossOrigin = "anonymous";
-  loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb',(gltf) => {
-    
-    const model = gltf.scene.children[0]
-    model.scale.multiplyScalar(0.1)
-    model.position.y = - 1.5
-    
-    scene.add(model)
-    
-    createMarker(model, new Vector3(0,17,8))
-    createMarker(model, new Vector3(4,15,1.7))
-    createMarker(model, new Vector3(-6,0,4))
+    // Camera Controls
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI / 2;
 
-  })
-  
-  
-}
+    // Handle window resize
+    window.addEventListener('resize', onWindowResize);
+  }
 
+  function animate() {
+    requestAnimationFrame(animate);
 
-function createMarker(model, position) {
-  const loader = new TextureLoader();
-  loader.crossOrigin = "";
-  const map = loader.load("https://i.imgur.com/EZynrrA.png");
-  map.encoding = sRGBEncoding
-  
-  const spriteMaterialFront = new SpriteMaterial( { map } );
-  
-  const spriteFront = new Sprite( spriteMaterialFront );
-  spriteFront.position.copy(position) 
-  
-  const spriteMaterialRear = new SpriteMaterial({ 
-    map,
-    opacity: 0.3, 
-    transparent: true, 
-    depthTest: false
-  });
-  
-  const spriteRear = new Sprite( spriteMaterialRear );
-  spriteRear.position.copy(position) 
-  
-  model.add(spriteFront, spriteRear)
-}
+    // Camera Controls Update
+    controls.update();
 
+    // Add your animation logic here
 
-            
-            
-        </script>
-    </body>
+    renderer.render(scene, camera);
+  }
+
+  function addAnnotation(object, text, onClick) {
+    const annotationElement = document.getElementById('annotation-container');
+    const position = object.position.clone();
+    const screenPosition = position.project(camera);
+
+    const annotation = document.createElement('div');
+    annotation.className = 'annotation';
+    annotation.textContent = text;
+
+    annotation.style.left = ((screenPosition.x + 1) / 2 * window.innerWidth) + 'px';
+    annotation.style.top = ((-screenPosition.y + 1) / 2 * window.innerHeight) + 'px';
+
+    annotation.addEventListener('click', onClick);
+
+    annotationElement.appendChild(annotation);
+    annotations.push(annotation);
+  }
+
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  function toggleAnnotations() {
+    const annotationContainer = document.getElementById('annotation-container');
+    annotationContainer.style.display = annotationContainer.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function zoomIn() {
+    controls.dollyIn(1.2);
+  }
+
+  function zoomOut() {
+    controls.dollyOut(1.2);
+  }
+</script>
+
+</body>
 </html>
