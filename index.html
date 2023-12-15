@@ -55,12 +55,12 @@
     document.body.appendChild(renderer.domElement);
 
     // Initial model
-    loadModel('engine.glb');
+    loadModel('Room_t.glb');
 
     // Hotspot buttons
     const hotspotButtonsContainer = document.getElementById('hotspot-buttons-container');
-    //addHotspotButton(hotspotButtonsContainer, 'Change Model 1', () => loadModel('Room_t.glb'), 0, 0);
-    //addHotspotButton(hotspotButtonsContainer, 'Change Model 2', () => loadModel('engine.glb'), 0, 1);
+    addHotspotButton(hotspotButtonsContainer, 'Change Model 1', () => loadModel('engine.glb'), 0, 0);
+    addHotspotButton(hotspotButtonsContainer, 'Change Model 2', () => loadModel('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb'), 0, 1);
     // Add more hotspot buttons as needed
 
     // View buttons
@@ -112,7 +112,7 @@
     sprite.callback = onClick;
 
     scene.add(sprite);
-    container.appendChild(document.createElement('div')).appendChild(sprite.element);
+    container.appendChild(document.createElement('div')).appendChild(renderer.domElement);
   }
 
   function addViewButton(container, text, onClick, x, y) {
@@ -125,7 +125,7 @@
     sprite.callback = onClick;
 
     scene.add(sprite);
-    container.appendChild(document.createElement('div')).appendChild(sprite.element);
+    container.appendChild(document.createElement('div')).appendChild(renderer.domElement);
   }
 
   function setTopView() {
