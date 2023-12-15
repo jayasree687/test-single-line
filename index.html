@@ -38,8 +38,9 @@
 
 <script type="module">
   import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+  import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
   import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
-  import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+
   let camera, scene, renderer, controls;
   let annotations = [];
 
@@ -56,11 +57,20 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // Load your 3D car model here, for example:
-    const loader = new THREE.GLTFLoader();
+    // Load your 3D car model using GLTFLoader
+    const loader = new GLTFLoader();
     loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb', (gltf) => { 
-      scene.add(gltf.scene);
-      addAnnotation(gltf.scene, 'Click me!', () => alert('Car clicked'));
+      const carModel = gltf.scene;
+      scene.add(carModel);
+
+      // Set up camera target for smooth orbit controls
+      const box = new THREE.Box3().setFromObject(carModel);
+      const center = box.getCenter(new THREE.Vector3());
+      controls.target.copy(center);
+      camera.lookAt(center);
+
+      // Add annotation
+      addAnnotation(carModel, 'Click me!', () => alert('Car clicked'));
     });
 
     // Camera Controls
