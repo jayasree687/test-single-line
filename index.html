@@ -35,27 +35,11 @@
   <button onclick="zoomIn()">Zoom In</button>
   <button onclick="zoomOut()">Zoom Out</button>
 </div>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>        
-        <script type="module">
-               import {
-  Color,
-  LinearEncoding,
-  MeshBasicMaterial,
-  Mesh,
-  PerspectiveCamera,
-  sRGBEncoding,
-  Sprite,
-  HemisphereLight,
-  SpriteMaterial,
-  TextureLoader,
-  BoxBufferGeometry,
-  Scene,
-  Vector3,
-  WebGLRenderer,
-} from "https://unpkg.com/three@0.127.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
 
-import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+<script type="module">
+  import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+  import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+  import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
   let camera, scene, renderer, controls;
   let annotations = [];
 
@@ -73,16 +57,11 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders
     document.body.appendChild(renderer.domElement);
 
     // Load your 3D car model here, for example:
-    function loadModel(scene) {
-  const loader = new GLTFLoader();
-  loader.crossOrigin = "anonymous";
-  loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb',(gltf) => {
-    
-    const model = gltf.scene.children[0]
-    model.scale.multiplyScalar(0.1)
-    model.position.y = - 1.5
-    
-    scene.add(model)
+    const loader = new THREE.GLTFLoader();
+    loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb', (gltf) => { 
+      scene.add(gltf.scene);
+      addAnnotation(gltf.scene, 'Click me!', () => alert('Car clicked'));
+    });
 
     // Camera Controls
     controls = new OrbitControls(camera, renderer.domElement);
