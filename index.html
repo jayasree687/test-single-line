@@ -43,7 +43,7 @@
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
     directionalLight.position.set(5, 5, 5);
     scene.add(directionalLight);
 
@@ -55,12 +55,12 @@
     document.body.appendChild(renderer.domElement);
 
     // Initial model
-    loadModel('Room_t.glb');
+    loadModel('engine.glb');
 
     // Hotspot buttons
     const hotspotButtonsContainer = document.getElementById('hotspot-buttons-container');
-    addHotspotButton(hotspotButtonsContainer, 'Change Model 1', () => loadModel('engine.glb'), 0, 0);
-    addHotspotButton(hotspotButtonsContainer, 'Change Model 2', () => loadModel('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb'), 0, 1);
+    addHotspotButton(hotspotButtonsContainer, 'Change Model 1', () => loadModel('Room_t.glb'), 0, 0);
+    addHotspotButton(hotspotButtonsContainer, 'Open Website', () => openWebsite('https://example.com'), 0, 1);
     // Add more hotspot buttons as needed
 
     // View buttons
@@ -103,7 +103,7 @@
   }
 
   function addHotspotButton(container, text, onClick, x, y) {
-    const spriteMap = new THREE.TextureLoader().load('2.png');
+    const spriteMap = new THREE.TextureLoader().load('1.png');
     const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.1, 0.1, 1);
@@ -116,7 +116,7 @@
   }
 
   function addViewButton(container, text, onClick, x, y) {
-    const spriteMap = new THREE.TextureLoader().load('1.png');
+    const spriteMap = new THREE.TextureLoader().load('2.png');
     const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.1, 0.1, 1);
@@ -126,6 +126,10 @@
 
     scene.add(sprite);
     container.appendChild(document.createElement('div')).appendChild(renderer.domElement);
+  }
+
+  function openWebsite(url) {
+    window.location.href = url;
   }
 
   function setTopView() {
