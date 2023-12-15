@@ -55,7 +55,7 @@
     document.body.appendChild(renderer.domElement);
 
     // Initial model
-    loadModel('path/to/your/first_model.glb');
+    loadModel('engine.glb');
 
     // Hotspot buttons
     const hotspotButtonsContainer = document.getElementById('hotspot-buttons');
@@ -103,13 +103,7 @@
   }
 
   function addHotspotButton(container, text, onClick, x, y) {
-    const map = new THREE.TextureLoader().load( '1.png' );
-const material = new THREE.SpriteMaterial( { map: map, color: 0xffffff } );
-
-const sprite = new THREE.Sprite( material );
-sprite.scale.set(200, 200, 1)
-scene.add( sprite );
-    const spriteMap = new THREE.TextureLoader().load('1.png');
+    const spriteMap = new THREE.TextureLoader().load('2.png');
     const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.1, 0.1, 1);
@@ -122,7 +116,7 @@ scene.add( sprite );
   }
 
   function addViewButton(container, text, onClick, x, y) {
-    const spriteMap = new THREE.TextureLoader().load('2.png');
+    const spriteMap = new THREE.TextureLoader().load('1.png');
     const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.1, 0.1, 1);
