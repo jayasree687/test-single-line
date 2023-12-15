@@ -7,13 +7,13 @@
   <style>
     body { margin: 0; overflow: hidden; }
     canvas { display: block; }
-    #hotspot-buttons {
+    #hotspot-buttons-container {
       position: absolute;
       top: 10px;
       left: 10px;
       z-index: 1;
     }
-    #view-buttons {
+    #view-buttons-container {
       position: absolute;
       top: 10px;
       right: 10px;
@@ -23,8 +23,8 @@
 </head>
 <body>
 
-<div id="hotspot-buttons"></div>
-<div id="view-buttons"></div>
+<div id="hotspot-buttons-container"></div>
+<div id="view-buttons-container"></div>
 
 <script type="module">
   import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
@@ -58,13 +58,13 @@
     loadModel('engine.glb');
 
     // Hotspot buttons
-    const hotspotButtonsContainer = document.getElementById('hotspot-buttons');
+    const hotspotButtonsContainer = document.getElementById('hotspot-buttons-container');
     addHotspotButton(hotspotButtonsContainer, 'Change Model 1', () => loadModel('Room_t.glb'), 0, 0);
     addHotspotButton(hotspotButtonsContainer, 'Change Model 2', () => loadModel('engine.glb'), 0, 1);
     // Add more hotspot buttons as needed
 
     // View buttons
-    const viewButtonsContainer = document.getElementById('view-buttons');
+    const viewButtonsContainer = document.getElementById('view-buttons-container');
     addViewButton(viewButtonsContainer, 'Top View', () => setTopView(), 1, 0);
     addViewButton(viewButtonsContainer, 'Front View', () => setFrontView(), 1, 1);
     // Add more view buttons as needed
@@ -112,7 +112,7 @@
     sprite.callback = onClick;
 
     scene.add(sprite);
-    container.appendChild(sprite.element);
+    container.appendChild(document.createElement('div')).appendChild(sprite.element);
   }
 
   function addViewButton(container, text, onClick, x, y) {
@@ -125,7 +125,7 @@
     sprite.callback = onClick;
 
     scene.add(sprite);
-    container.appendChild(sprite.element);
+    container.appendChild(document.createElement('div')).appendChild(sprite.element);
   }
 
   function setTopView() {
