@@ -61,6 +61,7 @@
     const hotspotButtonsContainer = document.getElementById('hotspot-buttons-container');
    // addHotspotButton(hotspotButtonsContainer, 'Change Model 1', () => loadModel('Room_t.glb'), 0, 0);
     addHotspotButton(hotspotButtonsContainer, 'Open Website', () => openWebsite('https://example.com'), 0, 1);
+    addHotspotButton1(hotspotButtonsContainer, 'Open Website', () => openWebsite('https://example.com'), 0, 5);
     // Add more hotspot buttons as needed
 
     // View buttons
@@ -108,6 +109,18 @@
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.1, 0.1, 1);
     sprite.position.set(x, y, 0);
+
+    sprite.callback = onClick;
+
+    scene.add(sprite);
+    container.appendChild(document.createElement('div')).appendChild(renderer.domElement);
+  }
+  function addHotspotButton1(container, text, onClick, x, y) {
+    const spriteMap = new THREE.TextureLoader().load('1.png');
+    const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
+    const sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(0.1, 0.1, 1);
+    sprite.position.set(5, 5, 0);
 
     sprite.callback = onClick;
 
