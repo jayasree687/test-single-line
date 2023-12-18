@@ -79,7 +79,7 @@
         scene.add(light)
 
         camera = new PerspectiveCamera(65, window.innerWidth / window.innerHeight, 1, 800);
-       // camera.position.set(-8, 2, 1);
+        camera.position.set(-8, 2, 1);
         camera.position.set(...positions[currPosition]);
 
         renderer = new WebGLRenderer();
@@ -97,7 +97,7 @@
         controls.maxDistance = 3;
 
         controls.minPolarAngle = 0; // radians
-        controls.maxPolarAngle = Math.PI / 2; // radians
+        controls.maxPolarAngle = Math.PI / 1; // radians
 
         controls.enableDamping = true;
         controls.dampingFactor = 1;
@@ -161,7 +161,7 @@
         tweenCamera(camera, positions[currPosition], 3000);
         setTimeout(()=>{
           openWebsite('https://jayasree687.github.io/model_1/')
-        },3000)
+        },4000)
       }
       function createMarker(model, onClick, x, y, z) {
         const loader = new TextureLoader();
