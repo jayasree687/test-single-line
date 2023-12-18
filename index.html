@@ -71,6 +71,9 @@ function init() {
     const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
     scene.add( directionalLight );  
     const light = new HemisphereLight( 0xffffff, 0xffffff, 2 )
+	                        hemiLight.color.setHSL( 0.6, 1, 0.6 );
+				hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+				hemiLight.position.set( 0, 50, 0 );
     scene.add(light)
     
     camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 20);
@@ -107,7 +110,7 @@ controls.dampingFactor = 0.05;
 function loadModel(scene) {
   const loader = new GLTFLoader();
   loader.crossOrigin = "anonymous";
-  loader.load('Room_tt.glb',(gltf) => {
+  loader.load('Room_ttt.glb',(gltf) => {
     
     const model = gltf.scene.children[0]
     model.scale.multiplyScalar(1)
