@@ -147,7 +147,7 @@ function openWebsite(url) {
         renderer.render(scene, camera);
       }
   function interval(){
-        currPosition = currPosition === 0 ? 1 : 0;
+        currPosition = currPosition === 0 ? 1 : 1;
         tweenCamera(camera, positions[currPosition], 3000);
       }
 function createMarker(model, onClick,x,y,z) {
