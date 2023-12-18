@@ -159,7 +159,9 @@
       function interval() {
         currPosition = currPosition === 0 ? 1 : 1;
         tweenCamera(camera, positions[currPosition], 3000);
-        openWebsite('https://example.com')
+        setTimeout(()=>{
+          'https://example.com'
+        },3000)
       }
       function createMarker(model, onClick, x, y, z) {
         const loader = new TextureLoader();
