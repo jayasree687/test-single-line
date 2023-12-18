@@ -76,7 +76,7 @@ function init() {
 				
     scene.add(light)
     
-    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 20);
+    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 1, 800);
    //camera.position.set(0, 0, 3);
     camera.position.set(...positions[currPosition]);
     
@@ -120,8 +120,8 @@ function loadModel(scene) {
     scene.add(model)
     
     // createMarker(model, () => openWebsite('https://example.com'), 0,17,8)
-    createMarker(model,() => setFrontView1(), 0,0,1.7)
-    createMarker(model, () => setFrontView(),0,0,4)
+    createMarker(model,() => setFrontView1(), 0,0,-1)
+    createMarker(model, () => setFrontView(),0,0,2)
 
   })
   
