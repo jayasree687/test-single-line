@@ -134,9 +134,9 @@
         if (value == 0) {
           positions[1] = [6, 1, 5];
         } else if (value == 1) {
-          position[1] = [1, 2, 9];
+          positions[1] = [1, 2, 9];
         } else {
-          position[1] = [7, 2, 0];
+          positions[1] = [7, 2, 0];
         }
         animate();
         interval();
@@ -160,7 +160,7 @@
         currPosition = currPosition === 0 ? 1 : 1;
         tweenCamera(camera, positions[currPosition], 3000);
         setTimeout(()=>{
-          'https://example.com'
+          openWebsite('https://example.com')
         },3000)
       }
       function createMarker(model, onClick, x, y, z) {
