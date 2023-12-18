@@ -25,6 +25,7 @@ h1 {
     
         <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>
         <script src="https://unpkg.com/tween.js@16.6.0/src/Tween.js"></script>
+	<script src='https://raw.githubusercontent.com/mrdoob/three.js/master/examples/jsm/environments/RoomEnvironment.js'></script>    
         <script type="module">
                import {
   Color,
@@ -46,7 +47,7 @@ h1 {
 import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
 
 import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
-import { RoomEnvironment } from'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/jsm/environments/RoomEnvironment.js';
+
 let camera, scene, renderer, controls;
 let currPosition = 0;
 const positions = [
