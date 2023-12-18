@@ -1,213 +1,223 @@
- <!DOCTYPE html>
- <html>
-    <head>
-        <title>My first three.js app</title>
-        <style>
-          body {
-	background-color: #000;
-	margin: 0px;
-	overflow: hidden;
-}
-body {
-	color: #444444;
-	}
-a {
-	color: #0088ff;
-}
-h1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  text-align: center;
-}
+<!DOCTYPE html>
+  <html>
 
-        </style>
-    </head>
-	 
-    <body>
-        <h1></h1>
-    
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>
-        <script src="https://unpkg.com/tween.js@16.6.0/src/Tween.js"></script>
-	    
-        <script type="module">
-               import {
-  Color,
-  LinearEncoding,
-  MeshBasicMaterial,
-  Mesh,
-  PerspectiveCamera,
-  sRGBEncoding,
-  Sprite,
-  HemisphereLight,
-  SpriteMaterial,
-  TextureLoader,
-  BoxBufferGeometry,
-  Scene,
-  Vector3,
-  WebGLRenderer,
-  Raycaster
-} from "https://unpkg.com/three@0.127.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
+  <head>
+    <title>My first three.js app</title>
+    <style>
+      body {
+        background - color: #000;
+        margin: 0px;
+        overflow: hidden;
+      }
 
-import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+      body {
+        color: #444444;
+      }
 
-let camera, scene, renderer, controls;
-let currPosition = 0;
-const positions = [
-[0,0,0],
-        [1, -2, 1],
-        [2, -2, 2]
+      a {
+        color: #0088ff;
+      }
+
+      h1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1></h1>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>
+    <script src="https://unpkg.com/tween.js@16.6.0/src/Tween.js"></script>
+
+    <script type="module">
+      import {
+        Color,
+        LinearEncoding,
+        MeshBasicMaterial,
+        Mesh,
+        PerspectiveCamera,
+        sRGBEncoding,
+        Sprite,
+        HemisphereLight,
+        SpriteMaterial,
+        TextureLoader,
+        BoxBufferGeometry,
+        Scene,
+        Vector3,
+        WebGLRenderer,
+        Raycaster
+      } from "https://unpkg.com/three@0.127.0/build/three.module.js";
+      import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
+
+      import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+
+      let camera, scene, renderer, controls;
+      let currPosition = 0;
+      const positions = [
+        [0, 0, 0],
+        [1, -2, 1]
       ];
-init();
-function init() {
-    
-  
-  
-    scene = new Scene();
-    scene.background = new Color(0xeeeeee)
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-	                        
-				
-    scene.add( directionalLight );  
-    const light = new HemisphereLight( 0xffffff, 0xffffff, 1 )
-				
-    scene.add(light)
-    
-    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 1, 800);
-    camera.position.set(-8,2,1);
-    camera.position.set(...positions[currPosition]);
-    
-    renderer = new WebGLRenderer();
-    renderer.outputEncoding = sRGBEncoding;
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.setPixelRatio( window.devicePixelRatio );
-    document.body.appendChild( renderer.domElement );
+      init();
+      function init() {
 
-    controls = new OrbitControls(camera, renderer.domElement);
-     controls.enablePan = false;
-     controls.rotateSpeed = 0.1;
-controls.zoomSpeed = 0.9;
 
-controls.minDistance = 3;
-controls.maxDistance = 3;
 
-controls.minPolarAngle = 0; // radians
-controls.maxPolarAngle = Math.PI /2; // radians
+        scene = new Scene();
+        scene.background = new Color(0xeeeeee)
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;	
 
-    renderer.setAnimationLoop(() => {
-      renderer.render( scene, camera );
-    });
-  
-  loadModel(scene)
-}
+        scene.add(directionalLight);
+        const light = new HemisphereLight(0xffffff, 0xffffff, 1)
 
-function loadModel(scene) {
-  const loader = new GLTFLoader();
-  loader.crossOrigin = "anonymous";
-  loader.load('Room_ttt.glb',(gltf) => {
-    
-    const model = gltf.scene.children[0]
-    model.scale.multiplyScalar(1)
-    model.position.y = - .8
-    model.position.z = - 2  
-    
-    scene.add(model)
-    
-    // createMarker(model, () => openWebsite('https://jayasree687.github.io/model_1/'), 0,17,8)
-    createMarker(model,() => setFrontView1(), 1,0,-2)
-    createMarker(model, () => setFrontView(),1,0,2)
-    createMarker(model, () => setFrontView(),1,0,0)	  
-    createMarker(model, () => setFrontView(),1,0,3)
-  })
-  
-  
-}
-function setFrontView() {
-  animate();
-  interval();
-  }
-  function setFrontView1() {
-    positions[1] = [6,1,5];
-  animate();
-  interval();
-  }
-function openWebsite(url) {
-    window.location.href = url;
-  }
-  function animate(){
+        scene.add(light)
+
+        camera = new PerspectiveCamera(65, window.innerWidth / window.innerHeight, 1, 800);
+        camera.position.set(-8, 2, 1);
+        camera.position.set(...positions[currPosition]);
+
+        renderer = new WebGLRenderer();
+        renderer.outputEncoding = sRGBEncoding;
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.enablePan = false;
+        controls.rotateSpeed = 0.1;
+        controls.zoomSpeed = 0.9;
+
+        controls.minDistance = 3;
+        controls.maxDistance = 3;
+
+        controls.minPolarAngle = 0; // radians
+        controls.maxPolarAngle = Math.PI / 2; // radians
+
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        renderer.setAnimationLoop(() => {
+          renderer.render(scene, camera);
+        });
+
+        loadModel(scene)
+      }
+
+      function loadModel(scene) {
+        const loader = new GLTFLoader();
+        loader.crossOrigin = "anonymous";
+        loader.load('Room_ttt.glb', (gltf) => {
+
+          const model = gltf.scene.children[0]
+          model.scale.multiplyScalar(1)
+          model.position.y = - .8
+          model.position.z = - 2
+
+          scene.add(model)
+
+          // createMarker(model, () => openWebsite('https://jayasree687.github.io/model_1/'), 0,17,8)
+          createMarker(model, () => setFrontView(0), 1, 0, -2)
+          createMarker(model, () => setFrontView(1), 1, 0, 2)
+          createMarker(model, () => setFrontView(2), 1, 0, 0)
+          createMarker(model, () => setFrontView(3), 1, 0, 3)
+        })
+
+
+      }
+      function setFrontView(value) {
+        if (value == 0) {
+          positions[1] = [6, 1, 5];
+        } else if (vallue == 1) {
+          position[1] = [1, 2, 9];
+        } else {
+          position[1] = [7, 2, 0];
+        }
+        animate();
+        interval();
+      }
+      function setFrontView1() {
+        positions[1] = [6, 1, 5];
+        animate();
+        interval();
+      }
+      function openWebsite(url) {
+        window.location.href = url;
+      }
+      function animate() {
         requestAnimationFrame(animate);
         // stats.update();
         TWEEN.update();
         camera.lookAt(scene.position);
         renderer.render(scene, camera);
       }
-  function interval(){
+      function interval() {
         currPosition = currPosition === 0 ? 1 : 1;
         tweenCamera(camera, positions[currPosition], 3000);
+        openWebsite('https://example.com')
       }
-function createMarker(model, onClick,x,y,z) {
-  const loader = new TextureLoader();
-  loader.crossOrigin = "";
-  const spriteMap = loader.load("hotspot.png");
-  spriteMap.encoding = sRGBEncoding
-  
-  const spriteMaterialFront = new SpriteMaterial( { map:spriteMap } );
-  
-  const spriteFront = new Sprite( spriteMaterialFront );
-  // spriteFront.position.copy(position) 
-  // spriteFront.callback = () => openWebsite('https://example.com');
-  // spriteFront.scale.set(0.1, 0.1, 1);
-  spriteFront.position.set(x,y,z);
-  spriteFront.callback = onClick;
-  // const spriteMaterialRear = new SpriteMaterial({ 
-  //   map,
-  //   opacity: 0.3, 
-  //   transparent: true, 
-  //   depthTest: false
-  // });
-  
-  // const spriteRear = new Sprite( spriteMaterialRear );
-  // spriteRear.callback = () => {
-  //   window.location.href = 'EXAMPLE.COM';
-  // };
-  // spriteRear.position.copy(position) 
-  
-  model.add(spriteFront)
-}
-document.addEventListener('click', (event) => {
-    const raycaster = new Raycaster();
-    const mouse = new Vector3();
+      function createMarker(model, onClick, x, y, z) {
+        const loader = new TextureLoader();
+        loader.crossOrigin = "";
+        const spriteMap = loader.load("hotspot.png");
+        spriteMap.encoding = sRGBEncoding
 
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        const spriteMaterialFront = new SpriteMaterial({ map: spriteMap });
 
-    raycaster.setFromCamera(mouse, camera);
+        const spriteFront = new Sprite(spriteMaterialFront);
+        // spriteFront.position.copy(position) 
+        // spriteFront.callback = () => openWebsite('https://example.com');
+        // spriteFront.scale.set(0.1, 0.1, 1);
+        spriteFront.position.set(x, y, z);
+        spriteFront.callback = onClick;
+        // const spriteMaterialRear = new SpriteMaterial({
+        //   map,
+        //   opacity: 0.3, 
+        //   transparent: true, 
+        //   depthTest: false
+        // });
 
-    const intersects = raycaster.intersectObjects(scene.children, true);
+        // const spriteRear = new Sprite( spriteMaterialRear );
+        // spriteRear.callback = () => {
+        //   window.location.href = 'EXAMPLE.COM';
+        // };
+        // spriteRear.position.copy(position) 
 
-    if (intersects.length > 0 && intersects[0].object.callback) {
-      intersects[0].object.callback();
-    }
-  });
+        model.add(spriteFront)
+      }
+      document.addEventListener('click', (event) => {
+        const raycaster = new Raycaster();
+        const mouse = new Vector3();
 
-  function tweenCamera(camera, position, duration) {        
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+
+        const intersects = raycaster.intersectObjects(scene.children, true);
+
+        if (intersects.length > 0 && intersects[0].object.callback) {
+          intersects[0].object.callback();
+        }
+      });
+
+      function tweenCamera(camera, position, duration) {
         new TWEEN.Tween(camera.position).to({
           x: position[0],
-          y: position[1],
-          z: position[2]
+          y: position[1]
         }, duration)
-        .easing(TWEEN.Easing.Quadratic.InOut)
-        .start();
-      }  
-		
-   
+          .easing(TWEEN.Easing.Quadratic.InOut)
+          .start();
+      }
 
-        </script>
-    </body>
-</html>
+
+
+    </script>
+  </body>
+
+  </html>
