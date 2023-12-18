@@ -65,7 +65,7 @@ function init() {
     const light = new HemisphereLight(0xffffee, 0x444444)
     scene.add(light)
     
-    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 1 );
+    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 5);
    //camera.position.set(0, 0, 3);
     camera.position.set(...positions[currPosition]);
     
