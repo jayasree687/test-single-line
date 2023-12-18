@@ -66,7 +66,7 @@ function init() {
     scene.add(light)
     
     camera = new PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 10 );
-  //  camera.position.set(0, 0, 3);
+   camera.position.set(0, 0, 3);
     camera.position.set(...positions[currPosition]);
     
     renderer = new WebGLRenderer();
