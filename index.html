@@ -295,7 +295,7 @@ document.addEventListener('click', (event) => {
 				};
 				uniforms[ 'topColor' ].value.copy( hemiLight.color );
 
-				scene.fog.color.copy( uniforms[ 'bottomColor' ].value );
+				//scene.fog.color.copy( uniforms[ 'bottomColor' ].value );
 
 				const skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
 				const skyMat = new THREE.ShaderMaterial( {
