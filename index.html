@@ -65,7 +65,7 @@ function init() {
     const light = new HemisphereLight(0xffffee, 0x444444)
     scene.add(light)
     
-    camera = new PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 10 );
+    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 10 );
    //camera.position.set(0, 0, 3);
     camera.position.set(...positions[currPosition]);
     
@@ -77,6 +77,14 @@ function init() {
 
     controls = new OrbitControls(camera, renderer.domElement);
      controls.enablePan = false;
+     controls.minDistance = 3;
+controls.maxDistance = 3;
+
+controls.minPolarAngle = 0; // radians
+controls.maxPolarAngle = Math.PI /2; // radians
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;	
 
     renderer.setAnimationLoop(() => {
       renderer.render( scene, camera );
