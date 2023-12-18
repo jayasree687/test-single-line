@@ -1,0 +1,194 @@
+ <!DOCTYPE html>
+ <html>
+    <head>
+        <title>My first three.js app</title>
+        <style>
+          body {
+	background-color: #000;
+	margin: 0px;
+	overflow: hidden;
+}
+
+h1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  text-align: center;
+}
+
+        </style>
+    </head>
+    <body>
+        <h1></h1>
+    
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js'></script>
+        <script src="https://unpkg.com/tween.js@16.6.0/src/Tween.js"></script>
+        <script type="module">
+               import {
+  Color,
+  LinearEncoding,
+  MeshBasicMaterial,
+  Mesh,
+  PerspectiveCamera,
+  sRGBEncoding,
+  Sprite,
+  HemisphereLight,
+  SpriteMaterial,
+  TextureLoader,
+  BoxBufferGeometry,
+  Scene,
+  Vector3,
+  WebGLRenderer,
+  Raycaster
+} from "https://unpkg.com/three@0.127.0/build/three.module.js";
+import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
+
+import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+
+let camera, scene, renderer, controls;
+let currPosition = 0;
+const positions = [
+[0,-2,1],
+        [1, 5, 4],
+        [5, 10, 15]
+      ];
+init();
+function init() {
+    
+  
+  
+    scene = new Scene();
+    scene.background = new Color(0xeeeeee)
+  
+    const light = new HemisphereLight(0xffffee, 0x444444)
+    scene.add(light)
+    
+    camera = new PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 10 );
+  //  camera.position.set(0, 0, 3);
+    camera.position.set(...positions[currPosition]);
+    
+    renderer = new WebGLRenderer();
+    renderer.outputEncoding = sRGBEncoding;
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    document.body.appendChild( renderer.domElement );
+
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.rotateSpeed = 0.1;
+controls.zoomSpeed = 0.9;
+
+controls.minDistance = 3;
+controls.maxDistance = 3;
+
+
+controls.enablePan = false;
+
+    renderer.setAnimationLoop(() => {
+      renderer.render( scene, camera );
+    });
+  
+  loadModel(scene)
+}
+
+function loadModel(scene) {
+  const loader = new GLTFLoader();
+  loader.crossOrigin = "anonymous";
+  loader.load('https://rawcdn.githack.com/mrdoob/three.js/76d16bd828c8d3e1870eac45aa466c20313cf944/examples/models/gltf/Nefertiti/Nefertiti.glb',(gltf) => {
+    
+    const model = gltf.scene.children[0]
+    model.scale.multiplyScalar(0.1)
+    model.position.y = - 1.5
+    
+    scene.add(model)
+    
+    // createMarker(model, () => openWebsite('https://example.com'), 0,17,8)
+    createMarker(model,() => setFrontView1(), 4,15,1.7)
+    createMarker(model, () => setFrontView(),-6,0,4)
+
+  })
+  
+  
+}
+function setFrontView() {
+  animate();
+  interval();
+  }
+  function setFrontView1() {
+    positions[1] = [6,1,5];
+  animate();
+  interval();
+  }
+function openWebsite(url) {
+    window.location.href = url;
+  }
+  function animate(){
+        requestAnimationFrame(animate);
+        // stats.update();
+        TWEEN.update();
+        camera.lookAt(scene.position);
+        renderer.render(scene, camera);
+      }
+  function interval(){
+        currPosition = currPosition === 0 ? 1 : 0;
+        tweenCamera(camera, positions[currPosition], 3000);
+      }
+function createMarker(model, onClick,x,y,z) {
+  const loader = new TextureLoader();
+  loader.crossOrigin = "";
+  const spriteMap = loader.load("https://i.imgur.com/EZynrrA.png");
+  spriteMap.encoding = sRGBEncoding
+  
+  const spriteMaterialFront = new SpriteMaterial( { map:spriteMap } );
+  
+  const spriteFront = new Sprite( spriteMaterialFront );
+  // spriteFront.position.copy(position) 
+  // spriteFront.callback = () => openWebsite('https://example.com');
+  // spriteFront.scale.set(0.1, 0.1, 1);
+  spriteFront.position.set(x,y,z);
+  spriteFront.callback = onClick;
+  // const spriteMaterialRear = new SpriteMaterial({ 
+  //   map,
+  //   opacity: 0.3, 
+  //   transparent: true, 
+  //   depthTest: false
+  // });
+  
+  // const spriteRear = new Sprite( spriteMaterialRear );
+  // spriteRear.callback = () => {
+  //   window.location.href = 'EXAMPLE.COM';
+  // };
+  // spriteRear.position.copy(position) 
+  
+  model.add(spriteFront)
+}
+document.addEventListener('click', (event) => {
+    const raycaster = new Raycaster();
+    const mouse = new Vector3();
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    if (intersects.length > 0 && intersects[0].object.callback) {
+      intersects[0].object.callback();
+    }
+  });
+
+  function tweenCamera(camera, position, duration) {        
+        new TWEEN.Tween(camera.position).to({
+          x: position[0],
+          y: position[1],
+          z: position[2]
+        }, duration)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .start();
+      }    
+            
+        </script>
+    </body>
+</html>
