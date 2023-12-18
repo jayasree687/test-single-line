@@ -78,7 +78,10 @@ function init() {
 
     controls = new OrbitControls(camera, renderer.domElement);
      controls.enablePan = false;
-     controls.minDistance = 3;
+     controls.rotateSpeed = 0.1;
+controls.zoomSpeed = 0.9;
+
+controls.minDistance = 3;
 controls.maxDistance = 3;
 
 controls.minPolarAngle = 0; // radians
