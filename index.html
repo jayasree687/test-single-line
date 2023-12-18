@@ -82,7 +82,7 @@ function init() {
 				dirLight.shadow.bias = - 0.0001;
     scene.add( directionalLight );  
     const light = new HemisphereLight( 0xffffff, 0xffffff, 2 )
-				hemiLight.position.set( 0, 50, 0 );
+				
     scene.add(light)
     
     camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 20);
