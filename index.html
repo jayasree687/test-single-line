@@ -73,14 +73,11 @@ function init() {
 
 				dirLight.shadow.mapSize.width = 2048;
 				dirLight.shadow.mapSize.height = 2048;
-
 				const d = 50;
-
 				dirLight.shadow.camera.left = - d;
 				dirLight.shadow.camera.right = d;
 				dirLight.shadow.camera.top = d;
 				dirLight.shadow.camera.bottom = - d;
-
 				dirLight.shadow.camera.far = 2000;
 				dirLight.shadow.bias = - 0.0001;
     scene.add( directionalLight );  
