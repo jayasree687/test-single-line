@@ -50,7 +50,7 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders
 let camera, scene, renderer, controls;
 let currPosition = 0;
 const positions = [
-[-3,-10,10],
+[-3,-10,-1],
         [0, 0, 0],
         [5, 10, 15]
       ];
@@ -66,7 +66,7 @@ function init() {
     scene.add(light)
     
     camera = new PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 10 );
-   camera.position.set(0, 0, 3);
+   //camera.position.set(0, 0, 3);
     camera.position.set(...positions[currPosition]);
     
     renderer = new WebGLRenderer();
@@ -76,7 +76,7 @@ function init() {
     document.body.appendChild( renderer.domElement );
 
     controls = new OrbitControls(camera, renderer.domElement);
-
+     controls.enablePan = false;
 
     renderer.setAnimationLoop(() => {
       renderer.render( scene, camera );
