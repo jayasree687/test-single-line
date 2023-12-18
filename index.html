@@ -50,7 +50,7 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders
 let camera, scene, renderer, controls;
 let currPosition = 0;
 const positions = [
-[5,-20,1],
+[5,-50,1],
         [0, 0, 0],
         [5, 10, 15]
       ];
@@ -65,7 +65,7 @@ function init() {
     const light = new HemisphereLight(0xffffee, 0x444444)
     scene.add(light)
     
-    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 10 );
+    camera = new PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 1 );
    //camera.position.set(0, 0, 3);
     camera.position.set(...positions[currPosition]);
     
