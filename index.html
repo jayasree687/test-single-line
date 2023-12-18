@@ -122,10 +122,10 @@
           scene.add(model)
 
           // createMarker(model, () => openWebsite('https://jayasree687.github.io/model_1/'), 0,17,8)
-          createMarker(model, () => setFrontView(0), -1, 0, -2)
-          createMarker(model, () => setFrontView(1), -1, 0, 2)
-          createMarker(model, () => setFrontView(2), -1, 0, 0)
-          createMarker(model, () => setFrontView(3), -1, 0, 3)
+          createMarker(model, () => setFrontView(0), 1, 0, -2)
+          createMarker(model, () => setFrontView(1), 1, 0, 2)
+          createMarker(model, () => setFrontView(2), 1, 0, 0)
+          createMarker(model, () => setFrontView(3), 1, 0, 3)
         })
 
 
@@ -133,7 +133,7 @@
       function setFrontView(value) {
         if (value == 0) {
           positions[1] = [6, 1, 5];
-        } else if (vallue == 1) {
+        } else if (value == 1) {
           position[1] = [1, 2, 9];
         } else {
           position[1] = [7, 2, 0];
